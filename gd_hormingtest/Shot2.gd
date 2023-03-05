@@ -22,10 +22,6 @@ func get_velocity() -> Vector2:
 
 ## 消滅する
 func vanish() -> void:
-	if Common.is_particle() == false:
-		# パーティクルなし.
-		queue_free()
-		return
 	
 	# 逆方向にパーティクルを発生させる.
 	var v = get_velocity() * -1
