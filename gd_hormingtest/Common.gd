@@ -6,6 +6,8 @@ const TIMER_SCREEN_SHAKE = 1.0
 var _layers = null
 var _max_shot = 32 # 同時に発射可能な弾の数.
 var _is_trail = false # トレイル弾を発射するかどうか.
+var _is_smoke = false
+var _is_smoke_rand = false
 
 func setup(layers) -> void:
 	_layers = layers
@@ -35,6 +37,15 @@ func set_max_shot(n:int) -> void:
 	_max_shot = n
 func get_max_shot() -> int:
 	return _max_shot
+	
+func set_smoke(b:bool) -> void:
+	_is_smoke = b
+func is_smoke() -> bool:
+	return _is_smoke
+func set_smoke_rand(b:bool) -> void:
+	_is_smoke_rand = b
+func is_smoke_rand() -> bool:
+	return _is_smoke_rand
 
 ## 角度差を求める.
 func diff_angle(now:float, next:float) -> float:

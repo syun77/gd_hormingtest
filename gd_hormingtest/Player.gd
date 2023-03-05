@@ -53,6 +53,7 @@ func _create_shot(deg:float, speed:float):
 		v.y = -sin(rad) * spd
 		obj.set_velocity(v)
 	else:
+		# ミサイル弾.
 		obj = ShotObj.instance()
 		obj.position = position
 		var v = Vector2()

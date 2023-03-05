@@ -1,5 +1,7 @@
 extends Area2D
 
+const SMOKE_OBJ = preload("res://Smoke.tscn")
+
 onready var _spr = $Sprite
 
 # 移動方向.
@@ -9,6 +11,8 @@ var _speed := 0.0
 
 # 経過時間
 var _timer := 0.0
+
+var _cnt = 0
 
 ## 速度をベクトルとして取得する.	
 func get_velocity() -> Vector2:
@@ -33,7 +37,7 @@ func vanish() -> void:
 	queue_free()
 
 func _ready() -> void:
-	pass
+	_spr.visible = false
 
 ## 一番近いターゲットを探す.
 func _search_target():
@@ -56,7 +60,24 @@ func set_velocity(v:Vector2) -> void:
 	_speed = v.length()
 
 func _physics_process(delta: float) -> void:
+	_spr.visible = true
 	_timer += delta
+	
+	_cnt += 1
+	if _cnt%2 == 0:
+		if Common.is_smoke():
+			# 煙発生.
+			var smoke = SMOKE_OBJ.instance()
+			smoke.position = position
+			var vel = Vector2.ZERO
+			if Common.is_smoke_rand():
+				# 煙をランダム移動.
+				var d = 45
+				var rad = deg2rad(_deg + rand_range(180-d, 180+d))
+				vel.x = 0.2 * _speed * cos(rad)
+				vel.y = 0.2 *_speed * -sin(rad)
+				smoke.set_velocity(vel)
+			Common.get_layer("main").add_child(smoke)
 	
 	#_speed += 1000 * delta # 加速する.
 	#if _speed > 5000:

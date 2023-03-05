@@ -113,6 +113,20 @@ theme = ExtResource( 3 )
 pressed = true
 text = "グロー"
 
+[node name="CheckButtonSmoke" type="CheckButton" parent="UILayer"]
+margin_top = 112.0
+margin_right = 176.0
+margin_bottom = 154.0
+theme = ExtResource( 3 )
+text = "煙"
+
+[node name="CheckButtonSmokeRand" type="CheckButton" parent="UILayer"]
+margin_top = 152.0
+margin_right = 176.0
+margin_bottom = 194.0
+theme = ExtResource( 3 )
+text = "煙移動"
+
 [node name="HSliderMaxShot" type="HSlider" parent="UILayer"]
 margin_left = 8.0
 margin_top = 40.0
