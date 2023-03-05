@@ -1,15 +1,28 @@
 extends Area2D
 
 onready var _spr = $Sprite
-onready var _line = $Line2D
 
-var _velocity = Vector2()
+# 移動方向.
+var _deg := 0.0
+# 速度.
+var _speed := 0.0
 
-var _spr_list = []
+# 経過時間
+var _timer := 0.0
 
+## 速度をベクトルとして取得する.	
+func get_velocity() -> Vector2:
+	var v = Vector2()
+	var rad = deg2rad(_deg)
+	v.x = cos(rad) * _speed
+	v.y = -sin(rad) * _speed
+	return v
+
+## 消滅する
 func vanish() -> void:
+	
 	# 逆方向にパーティクルを発生させる.
-	var v = _velocity * -1
+	var v = get_velocity() * -1
 	var spd = v.length()
 	for i in range(4):
 		var rad = atan2(-v.y, v.x)
@@ -20,24 +33,53 @@ func vanish() -> void:
 	queue_free()
 
 func _ready() -> void:
-	for i in range(8):
-		var rate = 1.0 - ((i+1) / 8.0)
-		var spr:Sprite = get_node("./Sprite%d"%i)
-		spr.texture = _spr.texture
-		if Common.is_trail():
-			spr.scale.x = rate
-			spr.scale.y = rate
-		spr.modulate.a = rate
-		_spr_list.append(spr)
-		
+	pass
 
-func set_velocity(deg:float, speed:float) -> void:
-	var rad = deg2rad(deg)
-	_velocity.x = cos(rad) * speed
-	_velocity.y = -sin(rad) * speed
+## 一番近いターゲットを探す.
+func _search_target():
+	var target_layer = Common.get_layer("main")
+	var distance:float = 999999
+	var target:Node2D = null
+	for obj in target_layer.get_children():
+		if not obj is Enemy:
+			continue
+		var d = (obj.position - position).length()
+		if d < distance:
+			# より近いターゲット.
+			target = obj
+			distance = d
+	
+	return target	
+## 速度を設定.
+func set_velocity(v:Vector2) -> void:
+	_deg = rad2deg(atan2(-v.y, v.x))
+	_speed = v.length()
 
 func _physics_process(delta: float) -> void:
-	var d = _velocity * delta
+	_timer += delta
+	
+	#_speed += 1000 * delta # 加速する.
+	#if _speed > 5000:
+	#	_speed = 5000 # 最高速度制限.
+	
+	var target = _search_target()
+	if target != null:
+		# 速度を更新.
+		var d = target.position - position
+		# 狙い撃ち角度を計算する.
+		var aim = rad2deg(atan2(-d.y, d.x))
+		var diff = Common.diff_angle(_deg, aim)
+		# 旋回する.
+		#_deg += diff * delta * 3 + (diff * _timer * (delta+0.5))
+		_deg += diff * delta * 5
+		
+	# 角度に合わせてスプライトを回転.
+	_spr.rotation_degrees = 180 - _deg - 90
+	
+	var v = get_velocity()
+	
+	# 移動量.
+	var d = v * delta
 	position += d
 		
 	# 画面外に出たら消す.
@@ -52,4 +94,4 @@ func _on_Shot_area_entered(area: Area2D) -> void:
 	
 	if area is Enemy:
 		# 敵だったらヒット処理.
-		area.hit(_velocity)
+		area.hit(get_velocity())

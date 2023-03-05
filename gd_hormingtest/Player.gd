@@ -55,6 +55,11 @@ func _create_shot(deg:float, speed:float):
 	else:
 		obj = ShotObj.instance()
 		obj.position = position
-		obj.set_velocity(deg, speed)
+		var v = Vector2()
+		var rad = deg2rad(270 + rand_range(-45, 45))
+		var spd = rand_range(500, 700)
+		v.x = cos(rad) * spd
+		v.y = -sin(rad) * spd
+		obj.set_velocity(v)
 	Common.get_layer("shot").add_child(obj)
 	return obj
