@@ -14,6 +14,7 @@ onready var _hdr = $WorldEnvironment
 onready var _checkbox_laser = $UILayer/CheckButtonLaser
 onready var _hslider_max_shot = $UILayer/HSliderMaxShot
 onready var _hslider_max_shot_label = $UILayer/HSliderMaxShot/Label
+onready var _checkbox_bloom = $UILayer/CheckButtonBloom
 
 
 func _ready() -> void:
@@ -29,3 +30,4 @@ func _process(delta: float) -> void:
 	var max_shot = _hslider_max_shot.value
 	_hslider_max_shot_label.text = "%d/32"%max_shot
 	Common.set_max_shot(max_shot)
+	_hdr.environment.glow_enabled = _checkbox_bloom.pressed

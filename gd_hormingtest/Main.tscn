@@ -105,6 +105,14 @@ margin_bottom = 40.0
 theme = ExtResource( 3 )
 text = "レーザー"
 
+[node name="CheckButtonBloom" type="CheckButton" parent="UILayer"]
+margin_top = 72.0
+margin_right = 176.0
+margin_bottom = 114.0
+theme = ExtResource( 3 )
+pressed = true
+text = "グロー"
+
 [node name="HSliderMaxShot" type="HSlider" parent="UILayer"]
 margin_left = 8.0
 margin_top = 40.0
