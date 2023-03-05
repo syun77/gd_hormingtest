@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 			continue
 		var spr = obj as Sprite
 		if is_glow:
-			spr.modulate = Color.darkgray
+			spr.modulate = Color.slategray
 		else:
 			spr.modulate = Color.white
 	Common.set_smoke(_checkbox_smoke.pressed)
