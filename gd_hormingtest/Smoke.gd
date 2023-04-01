@@ -1,4 +1,4 @@
-extends Sprite
+extends Sprite2D
 
 const MAX_TIMER = 0.5
 const MAX_FRAME = 4
@@ -10,7 +10,7 @@ func set_velocity(vel:Vector2) -> void:
 	_velocity = vel
 
 func _ready() -> void:
-	rotation_degrees = rand_range(0, 360)
+	rotation_degrees = randf_range(0, 360)
 
 func _physics_process(delta: float) -> void:
 	_timer += delta

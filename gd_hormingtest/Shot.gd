@@ -2,7 +2,7 @@ extends Area2D
 
 const SMOKE_OBJ = preload("res://Smoke.tscn")
 
-onready var _spr = $Sprite
+@onready var _spr = $Sprite
 
 # 移動方向.
 var _deg := 0.0
@@ -17,7 +17,7 @@ var _cnt = 0
 ## 速度をベクトルとして取得する.	
 func get_velocity() -> Vector2:
 	var v = Vector2()
-	var rad = deg2rad(_deg)
+	var rad = deg_to_rad(_deg)
 	v.x = cos(rad) * _speed
 	v.y = -sin(rad) * _speed
 	return v
@@ -30,9 +30,9 @@ func vanish() -> void:
 	var spd = v.length()
 	for i in range(4):
 		var rad = atan2(-v.y, v.x)
-		var deg = rad2deg(rad)
-		deg += rand_range(-30, 30)
-		var speed = spd * rand_range(0.1, 0.5)
+		var deg = rad_to_deg(rad)
+		deg += randf_range(-30, 30)
+		var speed = spd * randf_range(0.1, 0.5)
 		Common.add_particle(position, 1.0, deg, speed)
 	queue_free()
 
@@ -56,7 +56,7 @@ func _search_target():
 	return target	
 ## 速度を設定.
 func set_velocity(v:Vector2) -> void:
-	_deg = rad2deg(atan2(-v.y, v.x))
+	_deg = rad_to_deg(atan2(-v.y, v.x))
 	_speed = v.length()
 
 func _physics_process(delta: float) -> void:
@@ -67,13 +67,13 @@ func _physics_process(delta: float) -> void:
 	if _cnt%2 == 0:
 		if Common.is_smoke():
 			# 煙発生.
-			var smoke = SMOKE_OBJ.instance()
+			var smoke = SMOKE_OBJ.instantiate()
 			smoke.position = position
 			var vel = Vector2.ZERO
 			if Common.is_smoke_rand():
 				# 煙をランダム移動.
 				var d = 45
-				var rad = deg2rad(_deg + rand_range(180-d, 180+d))
+				var rad = deg_to_rad(_deg + randf_range(180-d, 180+d))
 				vel.x = 0.2 * _speed * cos(rad)
 				vel.y = 0.2 *_speed * -sin(rad)
 				smoke.set_velocity(vel)
@@ -88,7 +88,7 @@ func _physics_process(delta: float) -> void:
 		# 速度を更新.
 		var d = target.position - position
 		# 狙い撃ち角度を計算する.
-		var aim = rad2deg(atan2(-d.y, d.x))
+		var aim = rad_to_deg(atan2(-d.y, d.x))
 		var diff = Common.diff_angle(_deg, aim)
 		# 旋回する.
 		#_deg += diff * delta * 3 + (diff * _timer * (delta+0.5))

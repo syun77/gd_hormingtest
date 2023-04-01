@@ -22,7 +22,7 @@ func count_obj(name:String) -> int:
 
 ## パーティクルを発生させる.
 func add_particle(pos:Vector2, t:float, deg:float, speed:float):
-	var p = ParticleObj.instance()
+	var p = ParticleObj.instantiate()
 	p.position = pos
 	p.start(t, deg, speed)
 	get_layer("particle").add_child(p)

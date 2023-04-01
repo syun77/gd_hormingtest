@@ -44,21 +44,21 @@ func _get_shot_rate() -> int:
 func _create_shot(deg:float, speed:float):
 	var obj:Area2D = null
 	if Common.is_trail():
-		obj = Shot2Obj.instance()
+		obj = Shot2Obj.instantiate()
 		obj.position = position
 		var v = Vector2()
-		var rad = deg2rad(270 + rand_range(-45, 45))
-		var spd = rand_range(100, 1000)
+		var rad = deg_to_rad(270 + randf_range(-45, 45))
+		var spd = randf_range(100, 1000)
 		v.x = cos(rad) * spd
 		v.y = -sin(rad) * spd
 		obj.set_velocity(v)
 	else:
 		# ミサイル弾.
-		obj = ShotObj.instance()
+		obj = ShotObj.instantiate()
 		obj.position = position
 		var v = Vector2()
-		var rad = deg2rad(270 + rand_range(-45, 45))
-		var spd = rand_range(500, 700)
+		var rad = deg_to_rad(270 + randf_range(-45, 45))
+		var spd = randf_range(500, 700)
 		v.x = cos(rad) * spd
 		v.y = -sin(rad) * spd
 		obj.set_velocity(v)

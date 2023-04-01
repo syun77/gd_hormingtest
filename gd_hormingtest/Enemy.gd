@@ -4,7 +4,7 @@ class_name Enemy
 
 const TIMER_SHAKE = 0.5
 
-onready var _spr = $Enemy
+@onready var _spr = $Enemy
 
 var _start_pos = Vector2.ZERO
 var _shake_timer = 0.0
@@ -12,7 +12,7 @@ var _cnt = 0
 var _hit_cnt = 0
 
 # ノイズテクスチャ
-var _noise := OpenSimplexNoise.new()
+var _noise := FastNoiseLite.new()
 var _noise_y := 0
 
 func hit(vel:Vector2) -> void:
@@ -39,11 +39,11 @@ func _physics_process(delta: float) -> void:
 		if _cnt%4 < 2:
 			dx *= -1
 		_spr.position.x = dx
-		_spr.position.y = rand_range(-dy, dy)
+		_spr.position.y = randf_range(-dy, dy)
 	
-	_spr.modulate = Color.white
+	_spr.modulate = Color.WHITE
 	if _hit_cnt > 0:
-		_spr.modulate = Color.red
+		_spr.modulate = Color.RED
 		_hit_cnt -= 1
 
 func _ready() -> void:
